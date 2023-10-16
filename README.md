@@ -36,4 +36,7 @@ You may also see any lint errors in the console.
 
 
 Additional to this you need to start the JSON server in a separate terminal using the following command
+
+### 'cd .\quizzy\'
+
 ### `npm run json-server`
