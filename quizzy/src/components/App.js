@@ -7,15 +7,16 @@ import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Question from "./Question";
 import NextButton from "./NextButton";
-import Progress from "../Progress";
+import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
+import questions from "./../data/questions.json";
 
 const TIME_PER_QUES = 30;
 
 const initialState = {
-  questions: [],
+  questions: questions,
   status: "loading",
   index: 0,
   answer: null,
@@ -26,8 +27,10 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    // case "dataReceived":
+    //   return { ...state, questions: action.payload, status: "ready" };
     case "dataReceived":
-      return { ...state, questions: action.payload, status: "ready" };
+      return { ...state, status: "ready" };
     case "dataFailed":
       return { ...state, status: "error" };
     case "loading":
@@ -87,17 +90,21 @@ function App() {
   const numQuestions = questions.length;
   const maxPoints = questions.reduce((prev, curr) => prev + curr.points, 0);
 
+  // useEffect(function () {
+  //   async function fetchQuestions() {
+  //     try {
+  //       const res = await fetch("http://localhost:8000/questions");
+  //       const data = await res.json();
+  //       dispatch({ type: "dataReceived", payload: data });
+  //     } catch (err) {
+  //       dispatch({ type: "dataFailed" });
+  //     }
+  //   }
+  //   fetchQuestions();
+  // }, []);
+
   useEffect(function () {
-    async function fetchQuestions() {
-      try {
-        const res = await fetch("http://localhost:8000/questions");
-        const data = await res.json();
-        dispatch({ type: "dataReceived", payload: data });
-      } catch (err) {
-        dispatch({ type: "dataFailed" });
-      }
-    }
-    fetchQuestions();
+    dispatch({ type: "dataReceived" });
   }, []);
 
   return (
